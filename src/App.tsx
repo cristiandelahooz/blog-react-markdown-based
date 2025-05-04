@@ -1,11 +1,21 @@
-import { useState } from 'react'
+import { create } from 'zustand'
 import viteLogo from '/vite.svg'
 import reactLogo from './assets/react.svg'
 import './App.css'
 
+interface CounterState {
+  count: number
+  increment: () => void
+}
+const userCounterSore = create<CounterState>(set => ({
+  count: 0,
+  increment: () =>
+    set(state => ({
+      count: ++state.count
+    }))
+}))
 function App() {
-  const [count, setCount] = useState(0)
-
+  const { count, increment } = userCounterSore()
   return (
     <>
       <div>
@@ -18,9 +28,7 @@ function App() {
       </div>
       <h1>Vite + React</h1>
       <div className="card">
-        <button onClick={() => setCount(count => count + 1)}>
-          count is {count}
-        </button>
+        <button onClick={increment}>count is {count}!!!</button>
         <p>
           Edit <code>src/App.tsx</code> and save to test HMR
         </p>
