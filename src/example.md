@@ -1,3 +1,8 @@
+---
+Title: example
+author: Sakidoa
+---
+
 # Parallel and Distributed Programming
 
 This document provides an in-depth explanation of parallel and distributed programming concepts, along with practical examples using Java threads, RabbitMQ, and clusters.
