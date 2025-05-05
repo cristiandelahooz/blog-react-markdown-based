@@ -1,0 +1,23 @@
+#root {
+  display: contents;
+}
+
+:root {
+  --page-background: var(--color-gray-950);
+  --color-fg: var(--color-gray-200);
+  --color-primary: var(--color-blue-500);
+  --color-active: var(--color-pink-500);
+  --color-muted: oklch(var(--color-gray-200) / 10%);
+  --main-content-box-shadow: oklch(var(--color-gray-50) / 0.14) 0px 0px 0px 1px;
+  --outline-active-fg: var(--color-fg);
+  --outline-default-fg: var(--color-gray-500);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--page-background);
+  color: var(--color-fg);
+}

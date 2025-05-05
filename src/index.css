@@ -13,3 +13,13 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+html,
+body {
+  margin: 0;
+}
+
+body {
+  width: 100vh;
+  min-height: 100vh;
+}

@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import reactLogo from './assets/react.svg'
+import { Container } from '@/atoms/container'
 import './app.css'
 
 interface CounterState {
@@ -16,16 +16,11 @@ const userCounterSore = create<CounterState>(set => ({
 export default function App() {
   const { count, increment } = userCounterSore()
   return (
-    <>
-      <div>
-        <a href="https://github.com/cristiandelahooz" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1 className="animation-h1">Sakidoa</h1>
+    <Container>
+      <h1>Sakidoa</h1>
       <div className="card">
         <button onClick={increment}>count is {count}!!!</button>
       </div>
-    </>
+    </Container>
   )
 }
