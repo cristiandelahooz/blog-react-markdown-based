@@ -1,6 +1,12 @@
 ---
-Title: example
+title: Sakidoa example
 author: Sakidoa
+date: 2023-10-05
+tags:
+  - markdown
+  - yaml
+  - example
+description: This is an example of a frontmatter in YAML format.
 ---
 
 # Parallel and Distributed Programming
