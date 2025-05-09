@@ -1,5 +1,5 @@
 import jsxRuntime from 'react/jsx-runtime'
-import rehype2react from 'rehype-react'
+import rehype2react, { Components as JSXComponents } from 'rehype-react'
 import rehypeSlug from 'rehype-slug'
 import remark2rehype from 'remark-Rehype'
 import frontmatter from 'remark-frontmatter'
@@ -7,6 +7,8 @@ import remarkGfm from 'remark-gfm'
 import remarkParse from 'remark-parse'
 import { unified } from 'unified'
 import type { Processor } from 'unified'
+
+const rehypeReactComponents: Partial<JSXComponents> = {}
 
 export default class MarkdownRenderer {
   processor: Processor | null = null
@@ -19,9 +21,10 @@ export default class MarkdownRenderer {
       allowDangerousHtml: true
     })
     const html2react = md2html.use(rehype2react, {
-      Fragment: jsxRuntime.Fragment,
-      jsx: jsxRuntime.jsx,
-      jsxs: jsxRuntime.jsxs
+      Fragment: jsxRuntime.Fragment as any,
+      jsx: jsxRuntime.jsx as any,
+      jsxs: jsxRuntime.jsxs as any,
+      components: rehypeReactComponents
     })
     this.processor = html2react
     return html2react
