@@ -1,10 +1,10 @@
 import MarkdownRenderer from '@/utils/markdown-renderer'
-import { mdastExtractHeadings } from '@/utils/mdast-extract-headings'
 import type { Root as HastRoot } from 'hast'
 import type { Root as MdastRoot } from 'mdast'
 import { EXIT, visit } from 'unist-util-visit'
 import YAML from 'yaml'
 import { create } from 'zustand'
+import { useTocStore } from './toc'
 
 type ContentType = React.ReactElement<
   unknown,
@@ -12,6 +12,7 @@ type ContentType = React.ReactElement<
 >
 
 interface ContentState {
+  renderId: number
   dom: ContentType | null
   mdast: MdastRoot | null
   hast: HastRoot | null
@@ -34,18 +35,17 @@ export const useContentStore = create<ContentState>(set => ({
       const { result, mdast, hast } = await render.render(markdown)
 
       let title = ''
-      visit(mdast, 'yaml', node => {
+      visit(mdast, 'yaml', (node: any) => {
         const frontmatter = YAML.parse(node.value)
         title = frontmatter.title || ''
         return EXIT
       })
 
-      const headings = mdastExtractHeadings(mdast as MdastRoot)
-      console.log('headings: ', headings)
+      useTocStore.getState().update(mdast as MdastRoot)
       set({
-        dom: result,
-        mdast,
-        hast,
+        dom: result as unknown as ContentType,
+        mdast: mdast as MdastRoot,
+        hast: hast as HastRoot,
         title,
         lastError: null
       })
