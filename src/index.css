@@ -1,6 +1,6 @@
 @layer reset, base, tokens, recipes, utilities, theme;
 @import "modern-normalize" layer(reset);
-@import "./tokens.css";
+@import "./tokens.css" layer(tokens);
 
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
