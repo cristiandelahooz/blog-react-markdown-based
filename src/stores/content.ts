@@ -1,4 +1,5 @@
 import MarkdownRenderer from '@/utils/markdown-renderer'
+import { mdastExtractHeadings } from '@/utils/mdast-extract-headings'
 import type { Root as HastRoot } from 'hast'
 import type { Root as MdastRoot } from 'mdast'
 import { EXIT, visit } from 'unist-util-visit'
@@ -38,6 +39,9 @@ export const useContentStore = create<ContentState>(set => ({
         title = frontmatter.title || ''
         return EXIT
       })
+
+      const headings = mdastExtractHeadings(mdast as MdastRoot)
+      console.log('headings: ', headings)
       set({
         dom: result,
         mdast,
