@@ -1,10 +1,8 @@
 ---
 
 # Blog with React & Markdown
-
-Welcome to **Blog React Markdown Based** – a sleek and modern blog application built using React and Markdown! This project is **my personal take** on the fantastic tutorial provided by [@craftzdog](https://github.com/craftzdog) in their repository [smooth-toc-example](https://github.com/craftzdog/smooth-toc-example) and their insightful YouTube video: [Create a Blog with Smooth TOC](https://www.youtube.com/watch?v=4g26x6FzuBU).
-
 ---
+Welcome to **Blog React Markdown Based** – a sleek and modern blog application built using React and Markdown! This project is **my personal take** on the fantastic tutorial provided by [@craftzdog](https://github.com/craftzdog) in their repository [smooth-toc-example](https://github.com/craftzdog/smooth-toc-example) and their insightful YouTube video: [Create a Blog with Smooth TOC](https://www.youtube.com/watch?v=4g26x6FzuBU).
 
 ## 🌟 Features
 
