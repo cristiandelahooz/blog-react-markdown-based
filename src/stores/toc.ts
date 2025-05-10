@@ -1,9 +1,10 @@
-import { create } from 'zustand'
-import type { Root } from 'mdast'
 import {
-  mdastExtractHeadings,
-  TOCHeading
+  TOCHeading,
+  mdastExtractHeadings
 } from '@/utils/mdast-extract-headings'
+import type { Root } from 'mdast'
+import { create } from 'zustand'
+import { loggerMiddleware } from './logger'
 
 export type Section = TOCHeading
 export type TocState = {
@@ -11,14 +12,16 @@ export type TocState = {
   update: (mdast: Root) => void
 }
 
-export const useTocStore = create<TocState>(set => ({
-  sections: [],
-  update: (mdast: Root) => {
-    if (mdast) {
-      const sections = mdastExtractHeadings(mdast)
-      set({ sections })
-    } else {
-      set({ sections: [] })
+export const useTocStore = create<TocState>(
+  loggerMiddleware(set => ({
+    sections: [],
+    update: (mdast: Root) => {
+      if (mdast) {
+        const sections = mdastExtractHeadings(mdast)
+        set({ sections })
+      } else {
+        set({ sections: [] })
+      }
     }
-  }
-}))
+  }))
+)
