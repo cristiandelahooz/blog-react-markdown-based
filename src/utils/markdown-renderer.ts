@@ -25,9 +25,11 @@ export default class MarkdownRenderer {
       .use(remarkParse)
       .use(remarkGfm)
       .use(frontmatter)
-    const md2html = remarkParser().use(remark2rehype, {
-      allowDangerousHtml: true
-    })
+    const md2html = remarkParser()
+      .use(remark2rehype, {
+        allowDangerousHtml: true
+      })
+      .use(rehypeSlug)
     const html2react = md2html.use(rehype2react, {
       Fragment: jsxRuntime.Fragment as any,
       jsx: jsxRuntime.jsx as any,
