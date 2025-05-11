@@ -1,3 +1,4 @@
+import { createRehypeHeading } from '@/components/heading'
 import jsxRuntime from 'react/jsx-runtime'
 import rehype2react, { Components as JSXComponents } from 'rehype-react'
 import rehypeSlug from 'rehype-slug'
@@ -8,7 +9,14 @@ import remarkParse from 'remark-parse'
 import { unified } from 'unified'
 import type { Processor } from 'unified'
 
-const rehypeReactComponents: Partial<JSXComponents> = {}
+const rehypeReactComponents: Partial<JSXComponents> = {
+  h1: createRehypeHeading(1),
+  h2: createRehypeHeading(2),
+  h3: createRehypeHeading(3),
+  h4: createRehypeHeading(4),
+  h5: createRehypeHeading(5),
+  h6: createRehypeHeading(6)
+}
 
 export default class MarkdownRenderer {
   processor: Processor | null = null
