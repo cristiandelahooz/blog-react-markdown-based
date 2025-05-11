@@ -4,6 +4,7 @@ import { MarkdownView } from '@/components/markdown-view'
 import './app.css'
 import { PageTitle } from './components/page-title'
 import { Box, HStack } from '@kuma-ui/core'
+import { MarkdownOutlineView } from './components/markdown-outline-view'
 
 export default function App() {
   return (
@@ -26,7 +27,7 @@ export default function App() {
               maxHeight={'calc(100vh - 70px)'}
               overflow={'auto'}
             >
-              outline goes here
+              <MarkdownOutlineView />
             </Box>
           </Box>
         </HStack>
