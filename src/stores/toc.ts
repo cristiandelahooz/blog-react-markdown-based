@@ -17,14 +17,15 @@ export type TocState = {
 }
 
 export const useTocStore = create<TocState>(
-  loggerMiddleware(set => ({
+  loggerMiddleware((set, get) => ({
     sections: [],
     update: (mdast: Root) => {
       if (mdast) {
-        const sections = mdastExtractHeadings(mdast).map(h => ({
-          ...h,
-          headingRef: null
-        }))
+        const prevSections = get().sections
+        const sections = mdastExtractHeadings(mdast).map(h => {
+          const prev = prevSections.find(s => s.id === h.id)
+          return { ...h, headingRef: prev ? prev.headingRef : null }
+        })
         set({ sections })
       } else {
         set({ sections: [] })
