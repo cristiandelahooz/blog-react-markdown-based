@@ -1,6 +1,6 @@
 .markdown-view {
   margin: 0;
-  line-height: 1.8;
+  line-height: 1.6;
   word-wrap: break-word;
   padding: 1em 2em;
 
@@ -34,6 +34,9 @@
   p {
     margin-top: 0;
     margin-bottom: 10px;
+  }
+  pre {
+    overflow: auto;
   }
   pre > code {
     padding: 0;
