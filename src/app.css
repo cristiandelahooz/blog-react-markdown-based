@@ -9,8 +9,8 @@
   --color-active: var(--color-pink-500);
   --color-muted: hsl(var(--hsl-gray-200) / 10%);
   --main-content-bg: var(--color-gray-900);
-  --main-content-box-shadow: oklch(var(--color-gray-50) / 0.14) 0px 0px 0px 1px;
-  --outline-active-fg: var(--color-pink-500);
+  --main-content-box-shadow: hsl(var(--hsl-gray-50) / 0.14) 0px 0px 0px 1px;
+  --outline-active-fg: var(--color-fg);
   --outline-default-fg: var(--color-gray-500);
 }
 
