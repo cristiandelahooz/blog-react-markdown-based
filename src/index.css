@@ -1,9 +1,10 @@
 @layer reset, base, tokens, recipes, utilities, theme;
 @import "modern-normalize" layer(reset);
-@import "./tokens.css" layer(tokens);
+@import "./tokens.css";
 
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
   font-weight: 400;
 
   color-scheme: dark;
@@ -14,8 +15,7 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-html,
-body {
+html {
   margin: 0;
 }
 
