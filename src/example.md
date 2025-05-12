@@ -11,73 +11,90 @@ description: This is an example of a frontmatter in YAML format.
 
 # Parallel and Distributed Programming
 
-This document provides an in-depth explanation of parallel and distributed programming concepts, along with practical examples using Java threads, RabbitMQ, and clusters.
+Este documento proporciona una explicación detallada de los conceptos de programación paralela y distribuida, junto con ejemplos prácticos avanzados usando Java (threads, RabbitMQ, clusters) y tablas comparativas para una comprensión profesional.
 
 ---
 
-## 1. What is Parallel Programming?
+## 1. ¿Qué es la Programación Paralela?
 
-Parallel programming is the process of executing multiple tasks simultaneously on multiple processors or cores within a single machine. It is commonly used to improve performance by dividing a large task into smaller subtasks that can run concurrently.
+La programación paralela consiste en ejecutar múltiples tareas simultáneamente en varios procesadores o núcleos dentro de una sola máquina. Se utiliza para mejorar el rendimiento dividiendo una tarea grande en subtareas más pequeñas que pueden ejecutarse en paralelo.
 
-### Key Concepts in Parallel Programming
+### Tabla Comparativa: Paralelismo vs Concurrencia
 
-- **Thread**: A lightweight process that runs within a program. Multiple threads can run concurrently in a single program.
-- **Concurrency**: The ability to execute multiple tasks at the same time, but not necessarily simultaneously (e.g., time-slicing).
-- **Parallelism**: The simultaneous execution of tasks on multiple processors or cores.
+| Concepto     | Definición                                                                       | Ejemplo Práctico                            |
+| ------------ | -------------------------------------------------------------------------------- | ------------------------------------------- |
+| Paralelismo  | Ejecución simultánea de tareas en múltiples núcleos/procesadores                 | Procesamiento de imágenes en lote           |
+| Concurrencia | Capacidad de gestionar múltiples tareas a la vez (no necesariamente simultáneas) | Servidor web manejando múltiples conexiones |
 
-### Example: Using Threads in Java
+### Conceptos Clave en Programación Paralela
 
-The following example demonstrates how to use Java threads to perform parallel computation.
+- **Thread (Hilo):** Proceso ligero que se ejecuta dentro de un programa. Varios hilos pueden correr en paralelo.
+- **Concurrency (Concurrencia):** Capacidad de ejecutar varias tareas a la vez, aunque no necesariamente al mismo tiempo.
+- **Parallelism (Paralelismo):** Ejecución simultánea de tareas en diferentes núcleos.
+
+### Ejemplo Avanzado: Pool de Hilos en Java
 
 ```java
-public class ThreadExample {
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+public class ThreadPoolExample {
     public static void main(String[] args) {
-        Thread thread1 = new Thread(() -> {
-            System.out.println("Thread 1 is running");
-        });
+        ExecutorService executor = Executors.newFixedThreadPool(4);
 
-        Thread thread2 = new Thread(() -> {
-            System.out.println("Thread 2 is running");
-        });
+        for (int i = 1; i <= 8; i++) {
+            int taskId = i;
+            executor.submit(() -> {
+                System.out.println("Ejecutando tarea " + taskId + " en " + Thread.currentThread().getName());
+            });
+        }
 
-        thread1.start();
-        thread2.start();
+        executor.shutdown();
     }
 }
 ```
 
-In this example:
-
-- Two threads (`thread1` and `thread2`) are created and started.
-- Each thread executes its task independently.
+**Explicación:**  
+Este ejemplo crea un pool de 4 hilos y ejecuta 8 tareas, mostrando cómo se distribuyen las tareas entre los hilos disponibles.
 
 ---
 
-## 2. What is Distributed Programming?
+## 2. ¿Qué es la Programación Distribuida?
 
-Distributed programming involves executing tasks across multiple machines connected via a network. It is used to build scalable and fault-tolerant systems.
+La programación distribuida implica ejecutar tareas en varias máquinas conectadas por una red. Es fundamental para construir sistemas escalables y tolerantes a fallos.
 
-### Key Concepts in Distributed Programming
+### Tabla: Características de Sistemas Distribuidos
 
-- **Message Passing**: Communication between distributed components using messages.
-- **Cluster**: A group of interconnected machines (nodes) that work together as a single system.
-- **Fault Tolerance**: The ability of a system to continue functioning even when some components fail.
+| Característica      | Descripción                                             | Ejemplo Real              |
+| ------------------- | ------------------------------------------------------- | ------------------------- |
+| Escalabilidad       | Capacidad de añadir más nodos para aumentar rendimiento | Clúster de servidores web |
+| Tolerancia a fallos | El sistema sigue funcionando si un nodo falla           | Base de datos replicada   |
+| Transparencia       | Oculta la complejidad de la red al usuario final        | Cloud computing           |
+
+### Conceptos Clave en Programación Distribuida
+
+- **Message Passing (Paso de Mensajes):** Comunicación entre componentes distribuidos mediante mensajes.
+- **Cluster:** Grupo de máquinas interconectadas que trabajan como un solo sistema.
+- **Fault Tolerance (Tolerancia a Fallos):** Capacidad de seguir funcionando ante fallos parciales.
 
 ---
 
-## 3. RabbitMQ: A Distributed Messaging System
+## 3. RabbitMQ: Sistema de Mensajería Distribuida
 
-RabbitMQ is a message broker that facilitates communication between distributed systems. It uses the **publish/subscribe** model to send and receive messages.
+RabbitMQ es un broker de mensajes que facilita la comunicación entre sistemas distribuidos usando el modelo **publish/subscribe**.
 
-### Key Components of RabbitMQ
+### Componentes Clave de RabbitMQ
 
-- **Producer**: Sends messages to a queue.
-- **Queue**: A buffer that stores messages until they are consumed.
-- **Consumer**: Retrieves messages from a queue.
+| Componente | Descripción                                     |
+| ---------- | ----------------------------------------------- |
+| Producer   | Envía mensajes a una cola                       |
+| Queue      | Almacena mensajes hasta que sean consumidos     |
+| Consumer   | Recibe mensajes de la cola                      |
+| Exchange   | Encaminador que distribuye mensajes a las colas |
 
-### Example: Sending and Receiving Messages with RabbitMQ
+### Ejemplo Avanzado: Productor y Consumidor con RabbitMQ
 
-#### Producer (Sender)
+#### Productor (Sender)
 
 ```java
 import com.rabbitmq.client.Channel;
@@ -85,7 +102,7 @@ import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 
 public class Producer {
-    private final static String QUEUE_NAME = "hello";
+    private final static String QUEUE_NAME = "advanced_queue";
 
     public static void main(String[] argv) throws Exception {
         ConnectionFactory factory = new ConnectionFactory();
@@ -93,21 +110,23 @@ public class Producer {
         try (Connection connection = factory.newConnection();
              Channel channel = connection.createChannel()) {
             channel.queueDeclare(QUEUE_NAME, false, false, false, null);
-            String message = "Hello, World!";
-            channel.basicPublish("", QUEUE_NAME, null, message.getBytes());
-            System.out.println(" [x] Sent '" + message + "'");
+            for (int i = 1; i <= 5; i++) {
+                String message = "Mensaje #" + i;
+                channel.basicPublish("", QUEUE_NAME, null, message.getBytes());
+                System.out.println(" [x] Enviado '" + message + "'");
+            }
         }
     }
 }
 ```
 
-#### Consumer (Receiver)
+#### Consumidor (Receiver) con Acknowledgement Manual
 
 ```java
 import com.rabbitmq.client.*;
 
 public class Consumer {
-    private final static String QUEUE_NAME = "hello";
+    private final static String QUEUE_NAME = "advanced_queue";
 
     public static void main(String[] argv) throws Exception {
         ConnectionFactory factory = new ConnectionFactory();
@@ -115,13 +134,14 @@ public class Consumer {
         try (Connection connection = factory.newConnection();
              Channel channel = connection.createChannel()) {
             channel.queueDeclare(QUEUE_NAME, false, false, false, null);
-            System.out.println(" [*] Waiting for messages. To exit press CTRL+C");
+            System.out.println(" [*] Esperando mensajes. Para salir presiona CTRL+C");
 
             DeliverCallback deliverCallback = (consumerTag, delivery) -> {
                 String message = new String(delivery.getBody(), "UTF-8");
-                System.out.println(" [x] Received '" + message + "'");
+                System.out.println(" [x] Recibido '" + message + "'");
+                channel.basicAck(delivery.getEnvelope().getDeliveryTag(), false);
             };
-            channel.basicConsume(QUEUE_NAME, true, deliverCallback, consumerTag -> { });
+            channel.basicConsume(QUEUE_NAME, false, deliverCallback, consumerTag -> { });
         }
     }
 }
@@ -129,31 +149,48 @@ public class Consumer {
 
 ---
 
-## 4. Clusters in Distributed Systems
+## 4. Clústeres en Sistemas Distribuidos
 
-A **cluster** is a group of interconnected machines (nodes) that work together to perform tasks. Clusters are commonly used in distributed systems to achieve scalability and fault tolerance.
+Un **clúster** es un grupo de máquinas interconectadas que trabajan juntas para realizar tareas, logrando escalabilidad y alta disponibilidad.
 
-### Key Features of Clusters
+### Tabla: Tipos de Clústeres
 
-- **Load Balancing**: Distributing tasks evenly across nodes.
-- **High Availability**: Ensuring the system remains operational even if some nodes fail.
-- **Scalability**: Adding more nodes to handle increased workload.
+| Tipo de Clúster     | Propósito Principal               | Ejemplo                                 |
+| ------------------- | --------------------------------- | --------------------------------------- |
+| Alta Disponibilidad | Minimizar tiempo de inactividad   | Clúster de bases de datos               |
+| Balanceo de Carga   | Distribuir tareas equitativamente | Servidores web detrás de un balanceador |
+| Computación         | Procesamiento paralelo masivo     | Clúster de supercomputadoras            |
+
+### Ejemplo: Balanceo de Carga con NGINX
+
+```nginx
+http {
+    upstream backend {
+        server backend1.example.com;
+        server backend2.example.com;
+    }
+
+    server {
+        listen 80;
+        location / {
+            proxy_pass http://backend;
+        }
+    }
+}
+```
 
 ---
 
-## 5. Combining Parallel and Distributed Programming
+## 5. Combinando Programación Paralela y Distribuida
 
-In real-world applications, parallel and distributed programming are often combined. For example:
+En aplicaciones reales, se combinan ambos enfoques:
 
-- Use threads for parallel computation within a single machine.
-- Use RabbitMQ to distribute tasks across multiple machines in a cluster.
+- Se usan hilos para procesamiento paralelo dentro de una máquina.
+- Se usan colas de mensajes (como RabbitMQ) para distribuir tareas entre varias máquinas en un clúster.
 
-### Example: Distributed Task Processing
+### Ejemplo Avanzado: Procesamiento Distribuido con Pool de Hilos
 
-1. **Producer**: Sends tasks to a RabbitMQ queue.
-2. **Consumers**: Multiple consumers retrieve tasks from the queue and process them in parallel using threads.
-
-#### Consumer with Thread Pool
+#### Consumidor con Pool de Hilos
 
 ```java
 import com.rabbitmq.client.*;
@@ -169,14 +206,14 @@ public class ThreadedConsumer {
         try (Connection connection = factory.newConnection();
              Channel channel = connection.createChannel()) {
             channel.queueDeclare(QUEUE_NAME, false, false, false, null);
-            System.out.println(" [*] Waiting for messages. To exit press CTRL+C");
+            System.out.println(" [*] Esperando tareas. Para salir presiona CTRL+C");
 
-            ExecutorService executor = Executors.newFixedThreadPool(3);
+            ExecutorService executor = Executors.newFixedThreadPool(4);
 
             DeliverCallback deliverCallback = (consumerTag, delivery) -> {
                 executor.submit(() -> {
                     String message = new String(delivery.getBody(), "UTF-8");
-                    System.out.println(" [x] Processed '" + message + "' by " + Thread.currentThread().getName());
+                    System.out.println(" [x] Procesado '" + message + "' por " + Thread.currentThread().getName());
                 });
             };
             channel.basicConsume(QUEUE_NAME, true, deliverCallback, consumerTag -> { });
@@ -187,14 +224,30 @@ public class ThreadedConsumer {
 
 ---
 
-## 6. Conclusion
+## 6. Visualización: Arquitectura de un Sistema Distribuido
 
-Parallel and distributed programming are essential for building high-performance and scalable systems. By combining Java threads, RabbitMQ, and clusters, you can create robust applications that handle large workloads efficiently.
+| Componente            | Descripción                       | Ejemplo de Tecnología    |
+| --------------------- | --------------------------------- | ------------------------ |
+| Balanceador de Carga  | Distribuye peticiones entre nodos | NGINX, HAProxy           |
+| Nodo de Procesamiento | Ejecuta tareas paralelas          | Java ThreadPool, Node.js |
+| Broker de Mensajes    | Intermedia la comunicación        | RabbitMQ, Kafka          |
+| Almacenamiento        | Guarda datos compartidos          | MongoDB, PostgreSQL      |
+
+```
+[Cliente] -> [Balanceador de Carga] -> [Nodos de Procesamiento] <-> [Broker de Mensajes] <-> [Almacenamiento]
+```
 
 ---
 
-## 7. References
+## 7. Conclusión
+
+La programación paralela y distribuida es esencial para construir sistemas modernos, escalables y robustos. Combinando hilos, colas de mensajes y clústeres, puedes diseñar aplicaciones capaces de manejar grandes volúmenes de trabajo de manera eficiente y tolerante a fallos.
+
+---
+
+## 8. Referencias
 
 - [Java Concurrency Documentation](https://docs.oracle.com/javase/tutorial/essential/concurrency/)
 - [RabbitMQ Official Documentation](https://www.rabbitmq.com/documentation.html)
 - [Distributed Systems Concepts](https://en.wikipedia.org/wiki/Distributed_computing)
+- [NGINX Load Balancing](https://docs.nginx.com/nginx/admin-guide/load-balancer/http-load-balancer/)
