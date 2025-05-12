@@ -21,7 +21,7 @@ export const MarkdownOutlineView = () => {
           top={0}
           left="0.75rem"
           bottom={0}
-          width="1px"
+          width="1.8px"
           backgroundColor="var(--color-muted)"
         />
         <MarkdownOutlineActiveSectionHighlight sections={sections} />
